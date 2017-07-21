@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rfid.netty.mapper.LabelMapper">
+  <resultMap id="BaseResultMap" type="com.rfid.netty.domain.Label">
+    <id column="label_id" jdbcType="INTEGER" property="labelId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="label_code" jdbcType="CHAR" property="labelCode" />
+    <result column="label_name" jdbcType="CHAR" property="labelName" />
+    <result column="last_local" jdbcType="CHAR" property="lastLocal" />
+    <result column="last_image" jdbcType="VARCHAR" property="lastImage" />
+    <result column="new_img" jdbcType="SMALLINT" property="newImg" />
+    <result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
+    <result column="X" jdbcType="INTEGER" property="x" />
+    <result column="Y" jdbcType="INTEGER" property="y" />
+    <result column="wanted" jdbcType="SMALLINT" property="wanted" />
+    <result column="found" jdbcType="SMALLINT" property="found" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="valid" jdbcType="SMALLINT" property="valid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    label_id, user_id, label_code, label_name, last_local, last_image, new_img, last_time, 
+    X, Y, wanted, found, icon, valid
+  </sql>
+  <select id="selectByExample" parameterType="com.rfid.netty.domain.LabelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from label
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from label
+    where label_id = #{labelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from label
+    where label_id = #{labelId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rfid.netty.domain.LabelExample">
+    delete from label
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rfid.netty.domain.Label">
+    insert into label (label_id, user_id, label_code, 
+      label_name, last_local, last_image, 
+      new_img, last_time, X, 
+      Y, wanted, found, 
+      icon, valid)
+    values (#{labelId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{labelCode,jdbcType=CHAR}, 
+      #{labelName,jdbcType=CHAR}, #{lastLocal,jdbcType=CHAR}, #{lastImage,jdbcType=VARCHAR}, 
+      #{newImg,jdbcType=SMALLINT}, #{lastTime,jdbcType=TIMESTAMP}, #{x,jdbcType=INTEGER}, 
+      #{y,jdbcType=INTEGER}, #{wanted,jdbcType=SMALLINT}, #{found,jdbcType=SMALLINT}, 
+      #{icon,jdbcType=VARCHAR}, #{valid,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rfid.netty.domain.Label">
+    insert into label
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="labelId != null">
+        label_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="labelCode != null">
+        label_code,
+      </if>
+      <if test="labelName != null">
+        label_name,
+      </if>
+      <if test="lastLocal != null">
+        last_local,
+      </if>
+      <if test="lastImage != null">
+        last_image,
+      </if>
+      <if test="newImg != null">
+        new_img,
+      </if>
+      <if test="lastTime != null">
+        last_time,
+      </if>
+      <if test="x != null">
+        X,
+      </if>
+      <if test="y != null">
+        Y,
+      </if>
+      <if test="wanted != null">
+        wanted,
+      </if>
+      <if test="found != null">
+        found,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="valid != null">
+        valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="labelId != null">
+        #{labelId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="labelCode != null">
+        #{labelCode,jdbcType=CHAR},
+      </if>
+      <if test="labelName != null">
+        #{labelName,jdbcType=CHAR},
+      </if>
+      <if test="lastLocal != null">
+        #{lastLocal,jdbcType=CHAR},
+      </if>
+      <if test="lastImage != null">
+        #{lastImage,jdbcType=VARCHAR},
+      </if>
+      <if test="newImg != null">
+        #{newImg,jdbcType=SMALLINT},
+      </if>
+      <if test="lastTime != null">
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="x != null">
+        #{x,jdbcType=INTEGER},
+      </if>
+      <if test="y != null">
+        #{y,jdbcType=INTEGER},
+      </if>
+      <if test="wanted != null">
+        #{wanted,jdbcType=SMALLINT},
+      </if>
+      <if test="found != null">
+        #{found,jdbcType=SMALLINT},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rfid.netty.domain.LabelExample" resultType="java.lang.Long">
+    select count(*) from label
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update label
+    <set>
+      <if test="record.labelId != null">
+        label_id = #{record.labelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.labelCode != null">
+        label_code = #{record.labelCode,jdbcType=CHAR},
+      </if>
+      <if test="record.labelName != null">
+        label_name = #{record.labelName,jdbcType=CHAR},
+      </if>
+      <if test="record.lastLocal != null">
+        last_local = #{record.lastLocal,jdbcType=CHAR},
+      </if>
+      <if test="record.lastImage != null">
+        last_image = #{record.lastImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newImg != null">
+        new_img = #{record.newImg,jdbcType=SMALLINT},
+      </if>
+      <if test="record.lastTime != null">
+        last_time = #{record.lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.x != null">
+        X = #{record.x,jdbcType=INTEGER},
+      </if>
+      <if test="record.y != null">
+        Y = #{record.y,jdbcType=INTEGER},
+      </if>
+      <if test="record.wanted != null">
+        wanted = #{record.wanted,jdbcType=SMALLINT},
+      </if>
+      <if test="record.found != null">
+        found = #{record.found,jdbcType=SMALLINT},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valid != null">
+        valid = #{record.valid,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update label
+    set label_id = #{record.labelId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      label_code = #{record.labelCode,jdbcType=CHAR},
+      label_name = #{record.labelName,jdbcType=CHAR},
+      last_local = #{record.lastLocal,jdbcType=CHAR},
+      last_image = #{record.lastImage,jdbcType=VARCHAR},
+      new_img = #{record.newImg,jdbcType=SMALLINT},
+      last_time = #{record.lastTime,jdbcType=TIMESTAMP},
+      X = #{record.x,jdbcType=INTEGER},
+      Y = #{record.y,jdbcType=INTEGER},
+      wanted = #{record.wanted,jdbcType=SMALLINT},
+      found = #{record.found,jdbcType=SMALLINT},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      valid = #{record.valid,jdbcType=SMALLINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rfid.netty.domain.Label">
+    update label
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="labelCode != null">
+        label_code = #{labelCode,jdbcType=CHAR},
+      </if>
+      <if test="labelName != null">
+        label_name = #{labelName,jdbcType=CHAR},
+      </if>
+      <if test="lastLocal != null">
+        last_local = #{lastLocal,jdbcType=CHAR},
+      </if>
+      <if test="lastImage != null">
+        last_image = #{lastImage,jdbcType=VARCHAR},
+      </if>
+      <if test="newImg != null">
+        new_img = #{newImg,jdbcType=SMALLINT},
+      </if>
+      <if test="lastTime != null">
+        last_time = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="x != null">
+        X = #{x,jdbcType=INTEGER},
+      </if>
+      <if test="y != null">
+        Y = #{y,jdbcType=INTEGER},
+      </if>
+      <if test="wanted != null">
+        wanted = #{wanted,jdbcType=SMALLINT},
+      </if>
+      <if test="found != null">
+        found = #{found,jdbcType=SMALLINT},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where label_id = #{labelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rfid.netty.domain.Label">
+    update label
+    set user_id = #{userId,jdbcType=INTEGER},
+      label_code = #{labelCode,jdbcType=CHAR},
+      label_name = #{labelName,jdbcType=CHAR},
+      last_local = #{lastLocal,jdbcType=CHAR},
+      last_image = #{lastImage,jdbcType=VARCHAR},
+      new_img = #{newImg,jdbcType=SMALLINT},
+      last_time = #{lastTime,jdbcType=TIMESTAMP},
+      X = #{x,jdbcType=INTEGER},
+      Y = #{y,jdbcType=INTEGER},
+      wanted = #{wanted,jdbcType=SMALLINT},
+      found = #{found,jdbcType=SMALLINT},
+      icon = #{icon,jdbcType=VARCHAR},
+      valid = #{valid,jdbcType=SMALLINT}
+    where label_id = #{labelId,jdbcType=INTEGER}
+  </update>
+</mapper>

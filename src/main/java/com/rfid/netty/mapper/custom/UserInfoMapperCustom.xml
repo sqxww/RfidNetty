@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rfid.netty.mapper.custom.UserInfoMapperCustom">
+  <resultMap id="BaseResultMap" type="com.rfid.netty.domain.UserInfo">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="CHAR" property="userName" />
+    <result column="password" jdbcType="CHAR" property="password" />
+    <result column="online" jdbcType="SMALLINT" property="online" />
+    <result column="sessionId" jdbcType="CHAR" property="sessionid" />
+    <result column="address" jdbcType="CHAR" property="address" />
+    <result column="port" jdbcType="INTEGER" property="port" />
+    <result column="last_login" jdbcType="TIMESTAMP"  property="lastLogin" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="valid" jdbcType="SMALLINT" property="valid" />
+  </resultMap>
+  <select id="getByNameAndPass" parameterType="map" resultMap="BaseResultMap">
+  	select * from user_info where user_name = #{name} and password= #{password};
+  </select>
+  
+  <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Integer" >
+  	select user_id from user_info where user_name = #{userName}
+  </select>
+  
+  <select id="getUsers" parameterType="map" resultMap="BaseResultMap" >
+  	select * from user_info where user_name &lt;&gt; "admin" limit #{index},#{size}
+  </select>
+  
+  <update id="updateSession" parameterType="map" >
+  	update user_info set online=1, sessionid=#{sessionId} where user_id=#{userId}
+  </update>
+  
+</mapper>

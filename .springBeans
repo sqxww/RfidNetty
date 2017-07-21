@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.8.3.201612191259-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/resources/conf/spring/applicationcontext-bean.xml</config>
+		<config>src/main/resources/conf/spring/applicationcontext-dao.xml</config>
+		<config>src/main/resources/conf/spring/applicationcontext-service.xml</config>
+		<config>src/main/resources/conf/spring/applicationcontext-handler.xml</config>
+	</configs>
+	<autoconfigs>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

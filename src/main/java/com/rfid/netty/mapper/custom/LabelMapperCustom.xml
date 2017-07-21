@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rfid.netty.mapper.custom.LabelMapperCustom">
+	<resultMap id="BaseResultMap" type="com.rfid.netty.domain.Label">
+		<id column="label_id" jdbcType="INTEGER" property="labelId" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="label_code" jdbcType="CHAR" property="labelCode" />
+		<result column="label_name" jdbcType="CHAR" property="labelName" />
+		<result column="last_local" jdbcType="CHAR" property="lastLocal" />
+		<result column="last_image" jdbcType="VARCHAR" property="lastImage" />
+		<result column="new_img" jdbcType="SMALLINT" property="newImg" />
+		<result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
+		<result column="X" jdbcType="INTEGER" property="x" />
+		<result column="Y" jdbcType="INTEGER" property="y" />
+		<result column="wanted" jdbcType="SMALLINT" property="wanted" />
+		<result column="found" jdbcType="SMALLINT" property="found" />
+		<result column="icon" jdbcType="VARCHAR" property="icon" />
+		<result column="valid" jdbcType="SMALLINT" property="valid" />
+	</resultMap>
+
+	<select id="getLabelByUserId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from label where user_id = #{userId}
+	</select>
+
+	<select id="getLabelByCode" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from label where label_code = #{labelCode}
+	</select>
+
+	<update id="deleteByCode" parameterType="java.lang.String">
+		update label set valid=0 where label_code = #{labelCode}
+	</update>
+
+	<select id="getLabelByUseridAndCode" parameterType="map"
+		resultMap="BaseResultMap">
+		select * from label where label_code = #{labelCode} and user_id = #{userId}
+	</select>
+
+	<update id="updateLabelByCode" parameterType="com.rfid.netty.domain.Label">
+		update label
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<!-- <if test="labelCode != null">
+				label_code = #{labelCode,jdbcType=CHAR},
+			</if> -->
+			<if test="labelName != null">
+				label_name = #{labelName,jdbcType=CHAR},
+			</if>
+			<if test="lastLocal != null">
+				last_local = #{lastLocal,jdbcType=CHAR},
+			</if>
+			<if test="lastImage != null">
+				last_image = #{lastImage,jdbcType=VARCHAR},
+			</if>
+			<if test="newImg != null">
+				new_img = #{newImg,jdbcType=SMALLINT},
+			</if>
+			<if test="lastTime != null">
+				last_time = #{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="x != null">
+				X = #{x,jdbcType=INTEGER},
+			</if>
+			<if test="y != null">
+				Y = #{y,jdbcType=INTEGER},
+			</if>
+			<if test="wanted != null">
+				wanted = #{wanted,jdbcType=SMALLINT},
+			</if>
+			<if test="found != null">
+				found = #{found,jdbcType=SMALLINT},
+			</if>
+			<if test="icon != null">
+				icon = #{icon,jdbcType=VARCHAR},
+			</if>
+			<if test="valid != null">
+				valid = #{valid,jdbcType=SMALLINT},
+			</if>
+		</set>
+		where label_code = #{labelCode}
+	</update>
+
+	<update id="updateLabelByCodeAndUserid" parameterType="com.rfid.netty.domain.Label">
+		update label
+		<set>
+			<!-- <if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if> -->
+			<!-- <if test="labelCode != null">
+				label_code = #{labelCode,jdbcType=CHAR},
+			</if> -->
+			<if test="labelName != null">
+				label_name = #{labelName,jdbcType=CHAR},
+			</if>
+			<if test="lastLocal != null">
+				last_local = #{lastLocal,jdbcType=CHAR},
+			</if>
+			<if test="lastImage != null">
+				last_image = #{lastImage,jdbcType=VARCHAR},
+			</if>
+			<if test="newImg != null">
+				new_img = #{newImg,jdbcType=SMALLINT},
+			</if>
+			<if test="lastTime != null">
+				last_time = #{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="x != null">
+				X = #{x,jdbcType=INTEGER},
+			</if>
+			<if test="y != null">
+				Y = #{y,jdbcType=INTEGER},
+			</if>
+			<if test="wanted != null">
+				wanted = #{wanted,jdbcType=SMALLINT},
+			</if>
+			<if test="found != null">
+				found = #{found,jdbcType=SMALLINT},
+			</if>
+			<if test="icon != null">
+				icon = #{icon,jdbcType=VARCHAR},
+			</if>
+			<if test="valid != null">
+				valid = #{valid,jdbcType=SMALLINT},
+			</if>
+		</set>
+		where label_code = #{labelCode} and user_id = #{userId}
+	</update>
+	
+</mapper>
