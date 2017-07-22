@@ -44,7 +44,8 @@ public class ActionDispatcherHandler extends ChannelInboundHandlerAdapter {
 					//执行actionMethod
 					NettyMessage respMsg = (NettyMessage) actionMethod.getMethod().invoke(ApplicationContextUtil.getBean(actionMethod.getObjId()), message, session);
 					//返回响应信息
-					ctx.writeAndFlush(respMsg);
+					if(respMsg != null)
+						ctx.writeAndFlush(respMsg);
 				}
 				
 			}
@@ -68,6 +69,6 @@ public class ActionDispatcherHandler extends ChannelInboundHandlerAdapter {
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		ctx.fireExceptionCaught(cause);
+		System.out.println(ctx.channel().remoteAddress() + ":::" + cause);
 	}
 }

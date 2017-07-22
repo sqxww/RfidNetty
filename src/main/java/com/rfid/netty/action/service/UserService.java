@@ -1,5 +1,7 @@
 package com.rfid.netty.action.service;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +38,48 @@ public class UserService {
 		return userInfoMapperCustom.updateSession(sessionId, userId);
 	}
 	
-	public List<UserInfo> getUsers(Integer pageNum,Integer pageSize){
-		Integer index = (pageNum - 1) * pageSize;
+	public List<UserInfo> getUsers(){
 		
-		return userInfoMapperCustom.getUsers(index, pageSize);
+		return userInfoMapperCustom.getUsers();
+	}
+	
+	public byte[] getIconsById(int iconId){
+		String iconPath = userInfoMapperCustom.getIconsById(iconId);
+		if(iconPath == null)
+			return null;
+		byte[] imgBytes = null;
+		try {
+			FileInputStream fi = new FileInputStream(iconPath);
+			imgBytes = new byte[fi.available()];
+			fi.read(imgBytes);
+			fi.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return imgBytes;
+	}
+	
+	public int updateOwnIcon(int iconId, int userId){
+		String iconPath = userInfoMapperCustom.getIconsById(iconId);
+		if(iconPath == null)
+			return 0;
+		return userInfoMapperCustom.updateOwnIcon(iconPath, userId);
+	}
+	
+	public byte[] getIconById(int userId){
+		String iconPath = userInfoMapperCustom.getIconById(userId);
+		if(iconPath == null)
+			return null;
+		byte[] imgBytes = null;
+		try {
+			FileInputStream fi = new FileInputStream(iconPath);
+			imgBytes = new byte[fi.available()];
+			fi.read(imgBytes);
+			fi.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return imgBytes;
 	}
 	
 }

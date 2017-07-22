@@ -22,6 +22,8 @@ import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 
 public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
+	
+	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		NettyMessage message = (NettyMessage) msg;
@@ -36,6 +38,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 			NettyMessage resp = null;			
 			//判断用户是否重复登陆
 			if(channelSession != null){
+				System.out.println("----------------重复登陆--------------------");
 				resp = buildResponse(StatuType.REP_LOG.value(), channelSession.getSessionID());
 			}else{
 				UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
@@ -49,7 +52,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 					/*
 					 * 
 					 */
-				}else{
+				} else{
 					//获取请求体
 					String body = (String) message.getBody();
 					//从请求体中获取账户名和密码
@@ -57,42 +60,43 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 					 * 
 					 */
 					//捕获转json时异常（若直接抛会导致连接关闭）
-					Map<String, String> params = ParamsMap.getParamsMap(body);
-					String userName = params.get("userName");
-					String password = params.get("password");
-					//查询数据库，判断用户是否存在
-					UserInfo user = userService.getByNameAndPass(userName, password);
-					//若用户存在，生成sessionID
-					if(user != null){
-						long respSessionId = generateSessionId();
-						//创建session对象
-						RfidSession session = new RfidSession();
-						session.setSessionID(respSessionId);
-						session.setUserName(userName);
-						session.setUserId(user.getUserId());
-						//将session对象放入缓存
-						sessionCache.put("" + respSessionId, session);
-						//将session与当前通道进行绑定
-						csa.set(session);
-						resp = buildResponse(StatuType.SUB_OK.value(), respSessionId);
-						//开启推送线程
-						/*
-						 * 
-						 */
-//					ctx.executor().execute(command);
-						//获取用户之前会话并将其销毁并更新数据库状态
-						String preSession = user.getSessionid();
-						sessionCache.remove(preSession);
-						userService.updateSession(respSessionId + "", user.getUserId());
-					} else{
-						//返回用户不存在
-						resp = buildResponse(StatuType.NO_USER.value(), 0);
+					if(body != null){
+						Map<String, String> params = ParamsMap.getParamsMap(body);
+						String userName = params.get("userName");
+						String password = params.get("password");
+						//查询数据库，判断用户是否存在
+						UserInfo user = userService.getByNameAndPass(userName, password);
+						//若用户存在，生成sessionID
+						if(user != null){
+							long respSessionId = generateSessionId();
+							//创建session对象
+							RfidSession session = new RfidSession();
+							session.setSessionID(respSessionId);
+							session.setUserName(userName);
+							session.setUserId(user.getUserId());
+							//将session对象放入缓存
+							sessionCache.put("" + respSessionId, session);
+							//将session与当前通道进行绑定
+							csa.set(session);
+							resp = buildResponse(StatuType.SUB_OK.value(), respSessionId);
+							//开启推送线程
+							/*
+							 * 
+							 */
+							//获取用户之前会话并将其销毁并更新数据库状态
+							String preSession = user.getSessionid();
+							sessionCache.remove(preSession);
+							userService.updateSession(respSessionId + "", user.getUserId());
+						} else{
+							//返回用户不存在
+							resp = buildResponse(StatuType.NO_USER.value(), 0);
+						}
 					}
 				}
 
-				//返回响应消息
-				ctx.writeAndFlush(resp);
 			}
+			//返回响应消息
+			ctx.writeAndFlush(resp);
 
 		}else{
 			Header header = message.getHeader();
@@ -130,11 +134,8 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 				}
 			} else{
 				//消息头中的sessionId是否与通道中的一致
-				/*
-				 * 
-				 */
 				//通道中有但缓存中没有会话信息，说明别处登陆
-				if(session == null){
+				if(session == null && sessionId == channelSession.getSessionID()){
 					NettyMessage resp = buildResponse(StatuType.OTH_LOG.value(), 0);
 					resp.getHeader().setType(MessageType.SERVICE_RESP.value());
 					ctx.writeAndFlush(resp);
@@ -142,6 +143,11 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 					 * 
 					 */
 					ctx.close();
+				} else if(session == null && sessionId != channelSession.getSessionID()){
+					//返回会话错误信息
+					/*
+					 * 
+					 */
 				}else
 					ctx.fireChannelRead(msg);
 			}

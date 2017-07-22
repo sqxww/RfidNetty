@@ -10,8 +10,8 @@
     <result column="last_image" jdbcType="VARCHAR" property="lastImage" />
     <result column="new_img" jdbcType="SMALLINT" property="newImg" />
     <result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
-    <result column="X" jdbcType="INTEGER" property="x" />
-    <result column="Y" jdbcType="INTEGER" property="y" />
+    <result column="X" jdbcType="DOUBLE" property="x" />
+    <result column="Y" jdbcType="DOUBLE" property="y" />
     <result column="wanted" jdbcType="SMALLINT" property="wanted" />
     <result column="found" jdbcType="SMALLINT" property="found" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />

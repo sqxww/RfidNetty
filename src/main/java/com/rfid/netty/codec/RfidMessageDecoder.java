@@ -51,6 +51,7 @@ public class RfidMessageDecoder extends LengthFieldBasedFrameDecoder {
 				frame.readBytes(keyArray);
 				//转为字符串
 				key = new String(keyArray, "UTF-8");
+				System.out.println(key);
 				
 				//获取值长度
 				valueSize = frame.readInt();
@@ -59,6 +60,7 @@ public class RfidMessageDecoder extends LengthFieldBasedFrameDecoder {
 				frame.readBytes(valueArray);
 				//转为字符串
 				value = new String(valueArray, "UTF-8");
+				System.out.println(value);
 				attch.put(key, value);
 			}
 			keyArray = null;
@@ -76,6 +78,7 @@ public class RfidMessageDecoder extends LengthFieldBasedFrameDecoder {
 			frame.readBytes(bodyArray);
 			if(header.getBodyType() == BodyType.STR.value()){
 				String body = new String(bodyArray, "UTF-8");
+				System.out.println(body);
 				message.setBody(body);
 			} else{
 				message.setBody(bodyArray);

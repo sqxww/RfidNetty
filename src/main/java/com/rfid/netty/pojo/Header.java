@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Header {
-	private int crcCode;
+	private int crcCode = 0xabef0101;
 	private int length;
 	private long sessionID;
 	private byte type;

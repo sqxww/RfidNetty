@@ -19,9 +19,9 @@ public class Label {
 
     private Date lastTime;
 
-    private Integer x;
+    private Double x;
 
-    private Integer y;
+    private Double y;
 
     private Short wanted;
 
@@ -95,19 +95,19 @@ public class Label {
         this.lastTime = lastTime;
     }
 
-    public Integer getX() {
+    public Double getX() {
         return x;
     }
 
-    public void setX(Integer x) {
+    public void setX(Double x) {
         this.x = x;
     }
 
-    public Integer getY() {
+    public Double getY() {
         return y;
     }
 
-    public void setY(Integer y) {
+    public void setY(Double y) {
         this.y = y;
     }
 
